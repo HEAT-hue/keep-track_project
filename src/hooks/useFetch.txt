@@ -1,0 +1,73 @@
+// jshint esversion:6
+import { useState, useEffect } from "react";
+import { Project } from "../projects/Project";
+import { projectAPI } from "../projects/projectsAPI";
+import { useQuery } from "react-query";
+
+function useFetch(currentPage: number | undefined, id: number | undefined) {
+
+    // if (id) {
+    //     const {isLoading, isError, data:project, error} = useQuery({
+    //         queryKey: ['project', id],
+    //         queryFn: () => {
+    //             projectAPI.find(id)
+    //         }
+    //     })
+    // }
+
+
+
+    // const [project, setProject] = useState<Project | null>(null);
+    // const [projects, setProjects] = useState<Project[]>([]);
+    // const [loading, setLoading] = useState(false);
+    // const [error, setError] = useState<string | null>(null);
+
+    // async function getProjects(currentPage: number | undefined = 1) {
+    //     try {
+    //         const data = await projectAPI.get(currentPage); 
+    //         setError(null);
+    //         if (currentPage === 1) setProjects(data)
+    //         else setProjects((projects) => [...projects, ...data]);           
+    //     } catch (error) {
+    //         if (error instanceof Error) setError(error.message);   
+    //     }
+    //     finally {
+    //         setLoading(false);
+    //     }
+    // }
+
+    // async function findProject(id: number) {
+    //     try {
+    //         const data = await projectAPI.find(id);
+    //         setError(null);
+    //         setProject(data);
+    //     } catch (error) {
+    //         if (error instanceof Error) setError(error.message);
+    //     }
+    //     finally {
+    //         setLoading(false);
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     if (id) findProject(id);
+    //     else getProjects(currentPage);
+    // }, [currentPage, id]);
+
+    // function saveProject(project: Project) {
+    //     projectAPI.put(project)
+    //     .then((updatedProject) => {
+    //         const updatedProjects: Project[] = projects.map((p) => {
+    //             return p.id === project.id ? project : p
+    //         })
+    //         setProjects(updatedProjects);
+    //     })
+    //     .catch((error) => {
+    //         setError(error.message);
+    //     })
+    // }
+
+    // return {project, projects, error, loading, saveProject};
+}
+
+export {useFetch};
