@@ -1,5 +1,5 @@
 // jshint esversion:6
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { Project } from "./Project";
 import ProjectList from "./ProjectList";
@@ -116,7 +116,7 @@ function ProjectsPage() {
         toast.dismiss();
 
         // Toast new error
-        toast.error((error instanceof Error && error.message), { position: "top-center", autoClose: false })
+        toast.error(("NetworkError when attempting to fetch resource."), { position: "top-center", autoClose: false })
     }
 
     // If no eror, clear all notifications

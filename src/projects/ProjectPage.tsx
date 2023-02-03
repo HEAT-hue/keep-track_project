@@ -5,12 +5,15 @@ import { useParams } from "react-router-dom";
 import { ProjectDetail } from "./ProjectDetail";
 import { useQuery } from "react-query";
 import { projectAPI } from "./projectsAPI";
+import { toast } from "react-toastify";
+import { useRef } from "react";
 
 function ProjectPage() {
 
     // Get params from url
     const params = useParams();
     const id = Number(params.id);
+    const toastId = useRef(null);
 
     // Query to get data
     const { isLoading, isError, data: project, error } = useQuery({
@@ -21,6 +24,16 @@ function ProjectPage() {
         refetchOnWindowFocus: false,
         retryDelay: 500
     });
+
+    // Clear all toasts
+    toast.dismiss();
+
+    if (isError) {
+        // Toast new error
+        toast.error(("NetworkError when attempting to fetch resource."), { position: "top-center", autoClose: false });
+    }
+
+
 
     return (
         <div>
