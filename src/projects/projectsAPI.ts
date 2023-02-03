@@ -18,8 +18,12 @@ function tranlsateStatusToErrorMessage(status: number) {
 }
 
 function checkStatus(response: any) {
+    console.log("Checking status");
     // Validate server response
     if (response.ok) return response;
+
+    
+    console.log("Skipped error status handler!");
 
     // Generate error report
     const httpErrorInfo = {
@@ -80,6 +84,10 @@ const projectAPI = {
         .then(parseJsonData)
         .then(convertToProjectModels)
         .catch((e: TypeError) => {
+            console.log("Error caught");
+            console.log(e);
+            console.log(e.message);
+            // console.log("net::ERR_CONNECTION_REFUSED");
             throw new Error(e.message)
         })
     },

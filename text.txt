@@ -1,0 +1,13 @@
+// Save project
+function saveProject(project: Project) {
+        projectAPI.put(project)
+        .then((updatedProject) => {
+            const updatedProjects: Project[] = projects.map((p) => {
+                return p.id === project.id ? project : p
+            })
+            setProjects(updatedProjects);
+        })
+        .catch((error) => {
+            setError(error.message);
+        })
+    }

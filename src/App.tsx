@@ -4,10 +4,15 @@ import { ProjectPage } from "./projects";
 import { Route, Routes } from "react-router-dom";
 import { Navigation } from "./pages";
 import { HomePage } from "./pages";
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+
+
 
 function App() {
   return (
     <div className="container">
+      <ToastContainer limit={1} autoClose={2000} />
       <Routes>
         <Route path="/" element={<Navigation />}>
           <Route index element={<HomePage />} />

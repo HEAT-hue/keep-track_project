@@ -1,29 +1,35 @@
 // jshint esversion:6
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from "react-query";
+import { useState, useRef, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import { Project } from "./Project";
 import ProjectList from "./ProjectList";
 import { projectAPI } from "./projectsAPI";
 import { Spinner } from "../spinners";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 // import { queryClient } from "../contexts";
 
 function ProjectsPage() {
-    // Set Page number
-    const [currentPage, setCurrentPage] = useState<number>(1);
-
     // Get instance of global queryClient
     const queryClient = useQueryClient();
 
     // Query key
     const _queryKey = 'projects';
 
+    // Handle toasts notifications to user!
+    const toastId = useRef<any>(null);
+
+    // Set Page number
+    const [currentPage, setCurrentPage] = useState<number>(1);
+
     // Get query data
-    const { isLoading, isError, data: projects, error, isPreviousData, isFetching } = useQuery({
+    const result = useQuery({
         queryKey: [_queryKey, currentPage],
         queryFn: (): Promise<any> => {
             return projectAPI.get(currentPage);
         },
-        refetchOnWindowFocus: false,
+        refetchOnWindowFocus: true,
         keepPreviousData: true,
         retryDelay: 1000
     });
@@ -87,23 +93,35 @@ function ProjectsPage() {
         }
     )
 
-    // function saveProject(project: Project) {
-    //     projectAPI.put(project)
-    //     .then((updatedProject) => {
-    //         const updatedProjects: Project[] = projects.map((p) => {
-    //             return p.id === project.id ? project : p
-    //         })
-    //         setProjects(updatedProjects);
-    //     })
-    //     .catch((error) => {
-    //         setError(error.message);
-    //     })
-    // }
-
     // Handle pagination click to fetchmore projects - cause re-render, projects updated
     function handleMoreClick() {
         const maxPage = 5;
         setCurrentPage((currentPage) => Math.min(currentPage + 1, maxPage));
+    }
+
+    // Destructuring props
+    const { isLoading, isError, data: projects, error, isPreviousData, isFetching } = result;
+
+    // Clear all notifications upon reload!
+    toast.dismiss();
+
+    // If we have displayed a toast before
+    if (isFetching && toastId.current === null) {
+        toastId.current = toast.info("Fetching Projects... ", { position: "top-center", autoClose: false });
+    }
+
+    // If an error ocurred, alert the user!
+    if (isError) {
+        // Remove all previous toasts
+        toast.dismiss();
+
+        // Toast new error
+        toast.error((error instanceof Error && error.message), { position: "top-center", autoClose: false })
+    }
+
+    // If no eror, clear all notifications
+    if (!isError && !isFetching) {
+        toast.dismiss();
     }
 
     return (
