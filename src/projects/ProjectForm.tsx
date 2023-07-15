@@ -1,9 +1,10 @@
 // jshint esversion:6
 import React, { SyntheticEvent, useState } from "react";
 import { Project } from "./Project";
-import { UseMutateFunction, useMutation, useQueryClient } from "react-query";
-import { projectAPI } from "./projectsAPI";
-import { queryClient } from "../contexts";
+// import { useMutation } from "react-query";
+// import { UseMutateFunction, useMutation, useQueryClient } from "react-query";
+// import { projectAPI } from "./projectsAPI";
+// import { queryClient } from "../contexts";
 
 interface ProjectFormProps {
     project: Project,
@@ -20,53 +21,53 @@ function ProjectForm({ onCancel, onSave, project: initialProject }: ProjectFormP
     // const queryClient = useQueryClient();
 
     // Query key
-    const _queryKey = 'projects';
+    // const _queryKey = 'projects';
 
-    const editPostMutation = useMutation({
-        mutationFn: (project: Project): Promise<any> => {
-            return projectAPI.put(project);
-        },
-        onMutate: async (project: Project) => {
-            // Cancel all outgoing queries
-            // await queryClient.cancelQueries([_queryKey]);
+    // const editPostMutation = useMutation({
+    //     mutationFn: (project: Project): Promise<any> => {
+    //         return projectAPI.put(project);
+    //     },
+    //     onMutate: async (project: Project) => {
+    //         // Cancel all outgoing queries
+    //         // await queryClient.cancelQueries([_queryKey]);
 
-            // Get snapshot of old data incase query fails
-            const previousData = await queryClient.getQueryData(_queryKey);
-            console.log("previous Data");
-            console.log(previousData);
+    //         // Get snapshot of old data incase query fails
+    //         const previousData = await queryClient.getQueryData(_queryKey);
+    //         console.log("previous Data");
+    //         console.log(previousData);
 
 
-            // Optimistic update on query
-            queryClient.setQueryData([_queryKey], (oldData: any) => {
-                console.log("old Data");
-                console.log(oldData);
+    //         // Optimistic update on query
+    //         queryClient.setQueryData([_queryKey], (oldData: any) => {
+    //             console.log("old Data");
+    //             console.log(oldData);
 
-                const newData = [].concat(oldData).map((p: any) => p.id === project.id ? project : p);
-                return newData;
-            });
+    //             const newData = [].concat(oldData).map((p: any) => p.id === project.id ? project : p);
+    //             return newData;
+    //         });
 
-            // Return snapshot of cache 
-            return { previousData };
-        },
-        onError: async (error: TypeError, project, context) => {
-            // Logging all values
-            console.log(`Error`);
-            console.log(error.message);
+    //         // Return snapshot of cache 
+    //         return { previousData };
+    //     },
+    //     onError: async (error: TypeError, project, context) => {
+    //         // Logging all values
+    //         console.log(`Error`);
+    //         console.log(error.message);
 
-            console.log(`Project to update`);
-            console.log(project);
+    //         console.log(`Project to update`);
+    //         console.log(project);
 
-            console.log(`Context`);
-            console.log(context);
+    //         console.log(`Context`);
+    //         console.log(context);
 
-            // Revert old data because of failure
-            queryClient.setQueryData([_queryKey], context?.previousData);
-        },
-        onSettled: async () => {
-            // Invalide related queries
-            queryClient.invalidateQueries([_queryKey]);
-        }
-    })
+    //         // Revert old data because of failure
+    //         queryClient.setQueryData([_queryKey], context?.previousData);
+    //     },
+    //     onSettled: async () => {
+    //         // Invalide related queries
+    //         queryClient.invalidateQueries([_queryKey]);
+    //     }
+    // })
 
     // Generate error report and store it
     function validate(project: Project) {
